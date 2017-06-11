@@ -1,0 +1,38 @@
+#mySidenav a {
+    position: fixed;
+    left: -130px;
+    transition: 0.3s;
+    padding: 15px;
+    width: 150px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    border-radius: 0 5px 5px 0;
+}
+
+#mySidenav a:hover {
+    left: 0;
+}
+
+#user_bar {
+    top: 140px;
+    background-color: #4CAF50;
+}
+
+#student_bar {
+    top: 200px;
+    background-color: #fb7d00;
+}
+
+#book_bar{
+    top: 260px;
+    background-color: #2196F3;
+}
+#record_bar{
+    top: 320px;
+    background-color: #f44336;
+}
+#portal_bar{
+	top: 380px;
+    background-color: #555;
+}

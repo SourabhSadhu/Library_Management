@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Portal</title>
+		<script src="/js/angular.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="/css/main_app.css">
+		<script type="text/javascript">
+			function getReturn(){
+				return "Sample Data";
+			};
+			console.log(getReturn());
+		</script>
+	</head>
+		
+	<body>
+	<table>
+		<tbody>
+			<tr>
+				<td>Student Details</td>
+				<td>Book Details</td>
+				<td>Records</td>
+			</tr>
+			<tr>
+				<td>
+					<table>
+						<tr>
+							<td>Creds</td>
+							<td>Data</td>
+						</tr>
+						<tr>
+							<td>ID</td>
+							<td>{{ portal.student.id }}</td>
+						</tr>
+						<tr>
+							<td>Name</td>
+							<td>{{ portal.student.name }}</td>
+						</tr>
+						<tr>
+							<td>Email</td>
+							<td>{{ portal.student.email }}</td>
+						</tr>
+						
+						<tr>
+							<td>Year</td>
+							<td>{{ portal.student.year }}</td>
+						</tr>
+						
+						<tr>
+							<td>Stream</td>
+							<td>{{ portal.student.stream }}</td>
+						</tr>
+						
+						<tr>
+							<td>Roll</td>
+							<td>{{ portal.student.roll }}</td>
+						</tr>
+						
+						<tr>
+							<td>Max books</td>
+							<td>{{ portal.student.max_books }}</td>
+						</tr>
+						
+						<tr>
+							<td>Book Count</td>
+							<td>{{ portal.student.book_count }}</td>
+						</tr>
+					</table>
+				</td>
+				<td>
+					<table>
+						<tr>
+							<td>Creds</td>
+							<td>Data</td>
+						</tr>
+						<tr>
+							<td>Name</td>
+							<td>{{ portal.book.name }}</td>
+						</tr>
+						<tr>
+							<td>Author</td>
+							<td>{{ portal.book.author }}</td>
+						</tr>
+						<tr>
+							<td>Category</td>
+							<td>{{ portal.book.category }}</td>
+						</tr>
+						<tr>
+							<td>Sub Category</td>
+							<td>{{ portal.book.sub_category }}</td>
+						</tr>
+						<tr>
+							<td>Issued</td>
+							<td>{{ portal.book.issued }}</td>
+						</tr>
+						<tr>
+							<td>Total</td>
+							<td>{{ portal.book.total }}</td>
+						</tr>
+					</table>
+				</td>
+				<td>
+					<table>
+						<tr>
+							<td>Creds</td>
+							<td>Data</td>
+						</tr>
+						<tr>
+							<td>Issue Date</td>
+							<td>{{ portal.record.issue_date | date('dd/MM/yyyy') }}</td>
+						</tr>
+						<tr>
+							<td>Renew Date</td>
+							<td>{{ portal.record.renew_date | date('dd/MM/yyyy') }}</td>
+						</tr>
+						<tr>
+							<td>Due</td>
+							<td>{{ portal.record.due }}</td>
+						</tr>
+						<tr>
+							<td>Rate</td>
+							<td>{{ portal.record.rate }}</td>
+						</tr>
+						<tr>
+							<td>Fine</td>
+							<td>{{ portal.record.fine }}</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>Issue</td>
+				<td>Re Issue</td>
+				<td>Return</td>
+			</tr>
+		</tbody>
+	</table>
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

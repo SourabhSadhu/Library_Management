@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<script src="/js/angular.min.js"></script>
+<script src="/js/angular_animate.min.js"></script>
+<script src="/js/jquery-1.12.4.js"></script>
+<script src="/js/jquery-ui.js"></script>
+<script type="text/javascript">
+	var app = angular.module("LibraryManagement", [ 'ngAnimate' ]);
+</script>
+<script type="text/javascript" src="/js/user_management.js"></script>
+<script type="text/javascript" src="/js/student_management.js"></script>
+<script type="text/javascript" src="/js/book_management.js"></script>
+<script type="text/javascript" src="/js/record_management.js"></script>
+<script type="text/javascript" src="/js/portal_management.js"></script>
+<script type="text/javascript" src="/js/newStudentService.js"></script>
+<link rel="stylesheet"	href="/css/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" href="/css/scrollmenu.css">
+<link rel="stylesheet" type="text/css" href="/css/main_app.css">
+<link rel="stylesheet" type="text/css" href="/css/sidenav.css">
+<!-- <link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"> -->
+
+<title>Dashboard</title>
+
+</head>
+<body ng-app="LibraryManagement">
+	<h1>Library Management system</h1>
+
+	<!-- Scroll Menu -->
+	<div th:object="${user}">
+		<div class="scrollmenu">
+			<a href="#home" th:text="'Welcome ' + ${user.name}"></a> <a
+				href="#work">LogOut</a>
+		</div>
+		<input type="hidden" id="user_role" name="user_role"
+			value="${user.role}">
+	</div>
+
+	<!-- Navbar -->
+	<div id="mySidenav" class="sidenav">
+		<a href="#user" id="user_bar">User</a> <a href="#student" id="student_bar">Student</a>
+		<a href="#book" id="book_bar">Book</a> <a href="#record" id="record_bar">Record</a>
+		<a href="#portal" id="portal_bar">Portal</a>
+	</div>
+
+	
+	
+	<br />
+	<br />
+	<h3 id="user">User Management</h3>
+	<div ng-controller="UserController" class="user_management">
+		<div class="search_bar">
+			Search: <input type="text" ng-model="user_search">
+		</div>
+		
+		<br /> <br />
+		<table id="user_table_data" class="display" cellspacing="0"	width="100%">
+			<thead>
+				<tr>
+					<th>Role</th>
+					<th>Id</th>
+					<th>Name</th>
+					<th>Email</th>
+					<th>Status</th>
+					<th>Active Till</th>
+					<th>Manage</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-animate="'animate'"
+					ng-repeat="user in users | filter:user_search">
+					<td>{{ user.role_name }}</td>
+					<td>{{ user.id }}</td>
+					<td>{{ user.name }}</td>
+					<td>{{ user.email }}</td>
+					<td>{{ user.status }}</td>
+					<td>{{ user.active_till | date:'dd/MM/yyyy' }}</td>
+					<td width="100%"><button ng-click="editUser(user)"
+						class="blue-button">Edit</button> | <button ng-click="deleteUser(user)"
+						class="red-button">Delete</button></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<br />
+		<div class="search_bar">
+			<button ng-click="create_user=true;
+				user.messageS = false;
+	        	user.messageE = false;" class="blue-button">Create User
+				Entry</button>
+		</div>
+		<br /><br />
+
+		<div ng-show="create_user" class="animate_form">
+			<form ng-submit="submitUser()">
+				<table>
+					<tr>
+						<th colspan="2">Manage/Create User</th>
+					</tr>
+					<tr>
+						<td>Role</td>
+						<td><input type="text" ng-model="userForm.role" /></td>
+					</tr>
+					<!-- <tr>
+                    <td>ID</td>
+                    <td><input type="text" ng-model="userForm.id" /></td>
+                </tr> -->
+					<tr>
+						<td>Name</td>
+						<td><input type="text" ng-model="userForm.name" /></td>
+					</tr>
+					<tr>
+						<td>Email</td>
+						<td><input type="text" ng-model="userForm.email" /></td>
+					</tr>
+					<tr>
+						<td>Password</td>
+						<td><input type="text" ng-model="userForm.password" /></td>
+					</tr>
+					<tr>
+						<td>Active Till</td>
+						<td><input type="text" ng-model="userForm.active_till" /></td>
+					</tr>
+					<tr>
+						<td colspan="2"><input type="submit" value="Submit"
+							class="blue-button" /> <a ng-click="clearUser()"
+							class="red-button">Reset</a></td>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<div ng-show="user.messageS" class="center green-message">{{ user.response_message_success }}</div>
+		<div ng-show="user.messageE" class="center red-message">{{ user.response_message_error }}</div>
+	</div>
+
+	<br />
+	<br />
+	<h3 id="student">Student Management</h3>
+	<div class="student_management" ng-controller="StudentController">
+
+		<div class="search_bar">
+			Search: <input type="text" ng-model="student_search">
+		</div>
+		<br /> <br />
+
+		<table>
+			<tr>
+				<th>Id</th>
+				<th>Name</th>
+				<th>Email</th>
+				<th>Year</th>
+				<th>Stream</th>
+				<th>Roll</th>
+				<th>Max books</th>
+				<th>Book count</th>
+				<th>Manage</th>
+			</tr>
+			<tr ng-repeat="student in students | filter:student_search">
+				<td>{{ student.id }}</td>
+				<td>{{ student.name }}</td>
+				<td>{{ student.email }}</td>
+				<td>{{ student.year }}</td>
+				<td>{{ student.stream }}</td>
+				<td>{{ student.roll }}</td>
+				<td>{{ student.max_books }}</td>
+				<td>{{ student.book_count }}</td>
+				<td width="100%"><button ng-click="editStudent(student)"
+					class="blue-button">Edit</button> | <button ng-click="deleteStudent(student)"
+					class="red-button">Delete</button></td>
+			</tr>
+		</table>
+
+		<br />
+		<div class="search_bar">
+			<button ng-click="createNewEntry()" class="blue-button">Create
+				Student Entry</button>
+		</div>
+		<br /> <br />
+		<div ng-show="create_student" class="animate_form">
+			<form ng-submit="submitStudent()">
+				<table>
+					<tr>
+						<th colspan="2">Manage/Create Student</th>
+					</tr>
+					<tr>
+						<td>Name</td>
+						<td><input id="student_name" type="text" ng-model="studentForm.name" /></td>
+					</tr>
+					<tr>
+                    <td>ID</td>
+                    <td>
+                    	<!-- <input type="text" ng-model="studentForm.id" /> -->
+                    	{{ studentForm.id }}
+                    </td>
+                </tr>
+					<tr>
+						<td>Email</td>
+						<td><input id="student_email" type="text" ng-model="studentForm.email" /></td>
+					</tr>
+					<tr>
+						<td>Year</td>
+						<td><input type="text" ng-model="studentForm.year" /></td>
+					</tr>
+					<tr>
+						<td>Stream</td>
+						<td><input type="text" ng-model="studentForm.stream" /></td>
+					</tr>
+					<tr>
+						<td>Roll</td>
+						<td><input type="text" ng-model="studentForm.roll" /></td>
+					</tr>
+					<tr>
+						<td>Max Books</td>
+						<td><input type="text" ng-model="studentForm.max_books" /></td>
+					</tr>
+					<tr>
+						<td>Book Count</td>
+						<td><input type="text" ng-model="studentForm.book_count" /></td>
+					</tr>
+					<tr>
+						<td colspan="2"><input type="submit" value="Submit"
+							class="blue-button" /> <a ng-click="clearStudent()"
+							class="red-button">Reset</a></td>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+
+
+	<br />
+	<br />
+	<h3 id="book">Book Management</h3>
+	<div class="book_management" ng-controller="BookController">
+
+		<div class="search_bar">
+			Search: <input type="text" ng-model="book_search">
+		</div>
+		<br /> <br />
+
+		<table>
+			<tr>
+				<th>Name</th>
+				<th>Author</th>
+				<th>Category</th>
+				<th>Sub-Category</th>
+				<th>Issued</th>
+				<th>Total</th>
+				<th>Manage</th>
+			</tr>
+			<tr ng-repeat="book in books | filter:book_search">
+				<td>{{ book.name }}</td>
+				<td>{{ book.author }}</td>
+				<td>{{ book.category }}</td>
+				<td>{{ book.sub_category }}</td>
+				<td>{{ book.count }}</td>
+				<td>{{ book.total }}</td>
+				<td width="100%"><button ng-click="editBook(book)"
+					class="blue-button">Edit</button> | <button ng-click="deleteBook(book)"
+					class="red-button">Delete</button></td>
+			</tr>
+		</table>
+
+		<br />
+		<div class="search_bar">
+			<button ng-click="create_book=true;" class="blue-button">Create Book
+				Entry</button>
+		</div>
+		<br /> <br />
+		<div ng-show="create_book" class="animate_form">
+			<form ng-submit="submitBook()">
+				<table>
+					<tr>
+						<th colspan="2">Manage/Create Book</th>
+					</tr>
+					<tr>
+						<td>Name</td>
+						<td><input type="text" ng-model="bookForm.name" /></td>
+					</tr>
+					<tr>
+						<td>Author</td>
+						<td><input type="text" ng-model="bookForm.author" /></td>
+					</tr>
+					<tr>
+						<td>Category</td>
+						<td><input type="text" ng-model="bookForm.category" /></td>
+					</tr>
+					<tr>
+						<td>Sub Catgory</td>
+						<td><input type="text" ng-model="bookForm.sub_category" /></td>
+					</tr>
+					<tr>
+						<td>Issued</td>
+						<td><input type="text" ng-model="bookForm.count" /></td>
+					</tr>
+					<tr>
+						<td>Total</td>
+						<td><input type="text" ng-model="bookForm.total" /></td>
+					</tr>
+					<tr>
+						<td colspan="2"><input type="submit" value="Submit"
+							class="blue-button" /> <a ng-click="clearBook()"
+							class="red-button">Reset</a></td>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+	
+	
+	<br />
+	<br />
+	<h3 id="record">Record Management</h3>
+	<div class="record_management" ng-controller="RecordController">
+
+		<div class="search_bar">
+			Search: <input type="text" ng-model="record_search">
+		</div>
+		<br /> <br />
+
+		<table>
+			<tr>
+				<th>Book Name</th>
+				<th>Student Name</th>
+				<th>Issue Date</th>
+				<th>Renew Date</th>
+				<th>Due</th>
+				<th>Rate</th>
+				<th>Fine</th>
+			</tr>
+			<tr ng-repeat="record in records | filter:record_search">
+				<td>{{ record.book_name }}</td>
+				<td>{{ record.student_name }}</td>
+				<td>{{ record.issue_date | date:'dd/MM/yyyy' }}</td>
+				<td>{{ record.renew_date | date:'dd/MM/yyyy' }}</td>
+				<td>{{ record.due }}</td>
+				<td>{{ record.rate }}</td>
+				<td>{{ record.fine }}</td>
+			</tr>
+		</table>
+
+		<br />
+	
+	</div>
+	<br/><br/><br/>
+	
+	<h3 id="portal">Portal</h3>
+	<div class="portal_management" ng-controller="PortalController">
+		
+		<div class="search_bar">
+				Student Name: <input id="portal_std_search" ng-model="portal.student.search">
+				Book Name: <input id="portal_book_search" ng-model="portal.book.search">
+				<button class="blue-button" ng-click="populatePortalDetails()">Submit</button>
+		</div>
+		<br/><br/><br/>
+		<table>
+			<tbody>
+				<tr>
+					<th>Student Details</th>
+					<th>Book Details</th>
+					<th>Manage</th>
+				</tr>
+				<tr>
+					<td>
+						<table>
+							<tr>
+								<td>Creds</td>
+								<td>Data</td>
+							</tr>
+							<tr>
+								<td>ID</td>
+								<td>{{ portal.student.id }}</td>
+							</tr>
+							<tr>
+								<td>Name</td>
+								<td>{{ portal.student.name }}</td>
+							</tr>
+							<tr>
+								<td>Email</td>
+								<td>{{ portal.student.email }}</td>
+							</tr>
+							
+							<tr>
+								<td>Year</td>
+								<td>{{ portal.student.year }}</td>
+							</tr>
+							
+							<tr>
+								<td>Stream</td>
+								<td>{{ portal.student.stream }}</td>
+							</tr>
+							
+							<tr>
+								<td>Roll</td>
+								<td>{{ portal.student.roll }}</td>
+							</tr>
+							
+							<tr>
+								<td>Max books</td>
+								<td>{{ portal.student.max_books }}</td>
+							</tr>
+							
+							<tr>
+								<td>Book Count</td>
+								<td>{{ portal.student.book_count }}</td>
+							</tr>
+						</table>
+					</td>
+					<td>
+						<table>
+							<tr>
+								<td>Creds</td>
+								<td>Data</td>
+							</tr>
+							<tr>
+								<td>Name</td>
+								<td>{{ portal.book.name }}</td>
+							</tr>
+							<tr>
+								<td>Id</td>
+								<td>{{ portal.book.id }}</td>
+							</tr>
+							<tr>
+								<td>Author</td>
+								<td>{{ portal.book.author }}</td>
+							</tr>
+							<tr>
+								<td>Category</td>
+								<td>{{ portal.book.category }}</td>
+							</tr>
+							<tr>
+								<td>Sub Category</td>
+								<td>{{ portal.book.sub_category }}</td>
+							</tr>
+							<tr>
+								<td>Issued</td>
+								<td>{{ portal.book.count }}</td>
+							</tr>
+							<tr>
+								<td>Total</td>
+								<td>{{ portal.book.total }}</td>
+							</tr>
+						</table>
+					</td>
+					<td>
+						<table>
+							<tr>
+								<td>Creds</td>
+								<td>Data</td>
+							</tr>
+							<tr>
+								<td>Issue Date</td>
+								<td>{{ portal.record.issue_date | date:'dd/MM/yyyy' }}</td>
+							</tr>
+							<tr>
+								<td>Renew Date</td>
+								<td>{{ portal.record.renew_date | date:'dd/MM/yyyy' }}</td>
+							</tr>
+							<tr>
+								<td>Due</td>
+								<td>{{ portal.record.due }}</td>
+							</tr>
+							<tr>
+								<td>Rate</td>
+								<td>{{ portal.record.rate }}</td>
+							</tr>
+							<tr>
+								<td>Fine</td>
+								<td>{{ portal.record.fine }}</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="Issue"	class="blue-button" ng-click="portal_issueBook()"/></td>
+					<td><input type="submit" value="Re Issue"	class="blue-button" ng-click="portal_reIssueBook()"/></td>
+					<td><input type="submit" value="Return"	class="blue-button" ng-click="portal_returnBook()"/></td>
+				</tr>
+			</tbody>
+		</table>
+		<div ng-show="portal.messageS" class="center green-message">{{ portal.response_message_success }}</div>
+		<div ng-show="portal.messageE" class="center red-message">{{ portal.response_message_error }}</div>
+	</div>
+</body>
+</html>

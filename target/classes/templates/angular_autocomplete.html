@@ -1,0 +1,74 @@
+<html lang="en">
+
+<head>
+<meta charset="utf-8" />
+<title>jQuery UI Autocomplete - Default functionality</title>
+<script src="/js/angular.js"></script>
+<link rel="stylesheet"	href="/css/jquery-ui.css" />
+<script src="/js/jquery-1.12.4.js"></script>
+<script src="/js/jquery-ui.js"></script>
+<script>
+  
+	var app = angular.module('app', []);
+	app.controller('ctrl', function($scope, $http) {
+		/* $scope.availableTags = [ "ActionScript", "AppleScript",
+				"Asp", "BASIC", "C", "C++", "Clojure", "COBOL",
+				"ColdFusion", "Erlang", "Fortran", "Groovy",
+				"Haskell", "Java", "JavaScript", "Lisp",
+				"Perl", "PHP", "Python", "Ruby", "Scala",
+				"Scheme" ];
+		$scope.complete = function() {
+			console.log($scope.availableTags);
+			$("#tags").autocomplete({
+				source : $scope.availableTags
+			});
+		} */
+		studentNameList();
+		
+		/* $scope.complete = function cmplt(){
+			console.log("Called");
+			$("#tags").autocomplete({
+				source : $scope.studentList
+			});
+			$("#book").autocomplete({
+				source : $scope.bookList
+			});
+		}; */
+		function studentNameList(){
+        	$http({
+		        method : 'GET',
+		        url : "/getArraylist",
+		    }).then( _success, _error );
+		};
+		function _success(response) {
+			console.log(response.data[0]);
+			console.log(response.data[1]);
+			$scope.studentList = response.data[0];
+			$scope.bookList = response.data[1];
+			$("#tags").autocomplete({
+				source : $scope.studentList
+			});
+			$("#book").autocomplete({
+				source : $scope.bookList
+			});
+        }
+        function _error(response) {
+            console.log(response.statusText);
+        }
+        $scope.getVal = function(){
+        	console.log($scope.std.val);
+        	console.log($scope.book.val);
+        };
+	});
+</script>
+</head>
+
+<body ng-app="app" ng-controller="ctrl">
+	<div class="ui-widget">
+		<!-- <label for="tags"> -->Student: </label> <input id="tags" ng-keyup="complete()" ng-model="std.val" />
+		<!-- <label for="tags"> -->Books: </label> <input id="book" ng-keyup="complete()" ng-model="book.val"/>
+		<button ng-click=getVal()>check</button>
+	</div>
+</body>
+
+</html>
